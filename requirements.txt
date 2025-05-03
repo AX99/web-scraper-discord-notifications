@@ -1,0 +1,6 @@
+requests
+functions-framework
+python-dotenv
+beautifulsoup4
+selenium
+webdriver-manager
