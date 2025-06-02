@@ -1,13 +1,13 @@
-# Amazon Flex Monitor
+# Web Scraper Discord Notification
 
-A Flask-based web scraping service that monitors Amazon Flex recruitment pages for availability and sends notifications via Discord. Designed to run on Google Cloud Run with automated scheduling.
+A Flask-based web scraping service that monitors websites for content changes and sends notifications via Discord. Currently configured to monitor Amazon Flex recruitment pages for availability changes. Designed to run on Google Cloud Run with automated scheduling.
 
 ## How It Works
 
 The application performs the following:
 
-1. **Web Scraping**: Uses Selenium WebDriver to navigate to the Amazon Flex recruitment page
-2. **Text Detection**: Searches for specific text that indicates whether Amazon is accepting new delivery partners
+1. **Web Scraping**: Uses Selenium WebDriver to navigate to specified websites
+2. **Content Monitoring**: Searches for specific text that indicates changes in content or availability
 3. **Discord Notifications**: Sends status updates to a Discord channel via webhooks
 4. **HTTP API**: Exposes a POST endpoint that can be triggered manually or via scheduled jobs
 
@@ -17,8 +17,12 @@ The application performs the following:
 - Multiple CSS/XPath selector fallbacks for robust element detection
 - Intelligent waiting for dynamic content to load
 - Discord webhook integration with custom branding
-- Environment-based configuration
+- Environment-based configuration for easy customisation
 - Health monitoring and error reporting
+
+### Current Use Case: Amazon Flex Monitoring
+
+This implementation specifically monitors Amazon Flex recruitment pages to detect when Amazon starts accepting new delivery partners, but the framework can be adapted for any website content monitoring.
 
 ## Architecture
 
@@ -30,8 +34,8 @@ The application performs the following:
                               │
                               ▼
                        ┌─────────────────┐
-                       │  Amazon Flex    │
-                       │  Website        │
+                       │  Target Website │
+                       │  (Amazon Flex)  │
                        └─────────────────┘
 ```
 
@@ -39,7 +43,7 @@ The application performs the following:
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `WEBSITE_URL` | The Amazon Flex URL to monitor | Yes |
+| `WEBSITE_URL` | The website URL to monitor | Yes |
 | `SEARCH_TEXT` | Text to search for on the page | Yes |
 | `DISCORD_WEBHOOK_URL` | Discord webhook URL for notifications | Yes |
 | `PORT` | Port for the Flask application | No (defaults to 8080) |
@@ -56,8 +60,8 @@ The application performs the following:
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd amazon-flex
+   git clone https://github.com/yourusername/web-scraper-discord-notification.git
+   cd web-scraper-discord-notification
    ```
 
 2. **Create virtual environment**
@@ -75,6 +79,13 @@ The application performs the following:
    ```bash
    cp .env.example .env
    # Edit .env with your values
+   ```
+
+   Example `.env` for Amazon Flex monitoring:
+   ```bash
+   WEBSITE_URL=https://flex.amazon.co.uk/recruiting-cities
+   SEARCH_TEXT=We are not looking for more delivery partners at the moment
+   DISCORD_WEBHOOK_URL=your-discord-webhook-url
    ```
 
 5. **Run locally**
@@ -101,7 +112,7 @@ Use the provided launch configuration:
 ### Building the Image
 
 ```bash
-docker build -t amazon-flex-monitor .
+docker build -t web-scraper-discord-notification .
 ```
 
 ### Running with Docker
@@ -111,7 +122,7 @@ docker run -p 8080:8080 \
   -e WEBSITE_URL="https://flex.amazon.co.uk/recruiting-cities" \
   -e SEARCH_TEXT="We are not looking for more delivery partners" \
   -e DISCORD_WEBHOOK_URL="your-discord-webhook-url" \
-  amazon-flex-monitor
+  web-scraper-discord-notification
 ```
 
 ### Docker Compose
@@ -119,7 +130,7 @@ docker run -p 8080:8080 \
 ```yaml
 version: '3.8'
 services:
-  amazon-flex-monitor:
+  web-scraper:
     build: .
     ports:
       - "8080:8080"
@@ -144,17 +155,17 @@ services:
 gcloud auth configure-docker
 
 # Build and tag the image
-docker build -t gcr.io/[PROJECT-ID]/amazon-flex-monitor .
+docker build -t gcr.io/[PROJECT-ID]/web-scraper-discord-notification .
 
 # Push to Container Registry
-docker push gcr.io/[PROJECT-ID]/amazon-flex-monitor
+docker push gcr.io/[PROJECT-ID]/web-scraper-discord-notification
 ```
 
 ### Deploy to Cloud Run
 
 ```bash
-gcloud run deploy amazon-flex-monitor \
-  --image gcr.io/[PROJECT-ID]/amazon-flex-monitor \
+gcloud run deploy web-scraper-discord-notification \
+  --image gcr.io/[PROJECT-ID]/web-scraper-discord-notification \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \
@@ -171,7 +182,7 @@ gcloud run deploy amazon-flex-monitor \
 Create a Cloud Scheduler job to trigger the service regularly:
 
 ```bash
-gcloud scheduler jobs create http amazon-flex-check \
+gcloud scheduler jobs create http web-scraper-check \
   --schedule="*/15 * * * *" \
   --uri=[CLOUD-RUN-SERVICE-URL] \
   --http-method=POST \
@@ -205,7 +216,7 @@ gcloud logs read --project=[PROJECT-ID] --filter="resource.type=cloud_run_revisi
 ### Check Service Status
 
 ```bash
-gcloud run services describe amazon-flex-monitor --region=us-central1
+gcloud run services describe web-scraper-discord-notification --region=us-central1
 ```
 
 ## Troubleshooting
@@ -226,6 +237,15 @@ Run with verbose logging:
 ```bash
 FLASK_DEBUG=1 python main.py
 ```
+
+## Customisation for Other Websites
+
+To adapt this scraper for other websites:
+
+1. **Update Environment Variables**: Change `WEBSITE_URL` and `SEARCH_TEXT` to your target site and content
+2. **Modify Selectors**: Update the CSS selectors in `main.py` to match your target website's structure
+3. **Adjust Wait Conditions**: Some sites may need different waiting strategies
+4. **Update Discord Messages**: Customise the notification messages and branding
 
 ## Security Considerations
 
