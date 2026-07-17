@@ -81,10 +81,10 @@ This implementation specifically monitors Amazon Flex recruitment pages to detec
    # Edit .env with your values
    ```
 
-   Example `.env` for Amazon Flex monitoring:
+   Example `.env` for website monitoring:
    ```bash
-   WEBSITE_URL=https://flex.amazon.co.uk/recruiting-cities
-   SEARCH_TEXT=We are not looking for more delivery partners at the moment
+   WEBSITE_URL=https://website-to-scrape.com
+   SEARCH_TEXT=text to scrape
    DISCORD_WEBHOOK_URL=your-discord-webhook-url
    ```
 
@@ -119,8 +119,8 @@ docker build -t web-scraper-discord-notification .
 
 ```bash
 docker run -p 8080:8080 \
-  -e WEBSITE_URL="https://flex.amazon.co.uk/recruiting-cities" \
-  -e SEARCH_TEXT="We are not looking for more delivery partners" \
+  -e WEBSITE_URL="https://website-to-scrape.com" \
+  -e SEARCH_TEXT="text to scrape" \
   -e DISCORD_WEBHOOK_URL="your-discord-webhook-url" \
   web-scraper-discord-notification
 ```
@@ -135,8 +135,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - WEBSITE_URL=https://flex.amazon.co.uk/recruiting-cities
-      - SEARCH_TEXT=We are not looking for more delivery partners
+      - WEBSITE_URL=https://website-to-scrape.com
+      - SEARCH_TEXT=text to scrape
       - DISCORD_WEBHOOK_URL=your-discord-webhook-url
 ```
 
@@ -169,8 +169,8 @@ gcloud run deploy web-scraper-discord-notification \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \
-  --set-env-vars WEBSITE_URL="https://flex.amazon.co.uk/recruiting-cities" \
-  --set-env-vars SEARCH_TEXT="We are not looking for more delivery partners" \
+  --set-env-vars WEBSITE_URL="https://website-to-scrape.com" \
+  --set-env-vars SEARCH_TEXT="text to scrape" \
   --set-env-vars DISCORD_WEBHOOK_URL="your-discord-webhook-url" \
   --memory 512Mi \
   --cpu 1 \
@@ -202,7 +202,7 @@ Triggers a website check and sends Discord notification.
 
 **Example Response:**
 ```
-🔍 Text 'We are not looking for more delivery partners' not found in target element on https://flex.amazon.co.uk/recruiting-cities
+🔍 Text 'text to scrape' not found in target element on https://website-to-scrape.com
 ```
 
 ## Monitoring and Logs
