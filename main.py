@@ -24,8 +24,8 @@ def send_discord_message(message):
         
     data = {
         'content': message,
-        'username': 'Amazon Flex Monitor',
-        'avatar_url': 'https://m.media-amazon.com/images/G/01/amazonFlexMarketing/flex-favicon.png'
+        'username': 'Website Change Monitor',
+        'avatar_url': 'https://cdn-icons-png.flaticon.com/512/18408/18408116.png'
     }
     return requests.post(webhook_url, json=data).status_code
 
