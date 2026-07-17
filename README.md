@@ -1,6 +1,6 @@
 # Web Scraper Discord Notification
 
-A Flask-based web scraping service that monitors websites for content changes and sends notifications via Discord. Currently configured to monitor Amazon Flex recruitment pages for availability changes. Designed to run on Google Cloud Run with automated scheduling.
+A Flask-based web scraping service that monitors websites for content changes and sends notifications via Discord. Designed to run on Google Cloud Run with automated scheduling.
 
 ## How It Works
 
@@ -20,9 +20,9 @@ The application performs the following:
 - Environment-based configuration for easy customisation
 - Health monitoring and error reporting
 
-### Current Use Case: Amazon Flex Monitoring
+### Use Case
 
-This implementation specifically monitors Amazon Flex recruitment pages to detect when Amazon starts accepting new delivery partners, but the framework can be adapted for any website content monitoring.
+This framework can be adapted for any website content monitoring.
 
 ## Architecture
 
@@ -35,7 +35,6 @@ This implementation specifically monitors Amazon Flex recruitment pages to detec
                               ▼
                        ┌─────────────────┐
                        │  Target Website │
-                       │  (Amazon Flex)  │
                        └─────────────────┘
 ```
 
