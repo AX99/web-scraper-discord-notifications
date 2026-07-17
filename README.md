@@ -60,7 +60,7 @@ This implementation specifically monitors Amazon Flex recruitment pages to detec
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/web-scraper-discord-notification.git
+   git clone https://github.com/AX99/web-scraper-discord-notification.git
    cd web-scraper-discord-notification
    ```
 
@@ -271,4 +271,6 @@ To adapt this scraper for other websites:
 
 ## License
 
-[Add your license here] 
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
